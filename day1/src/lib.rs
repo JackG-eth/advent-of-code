@@ -1,14 +1,18 @@
+use std::iter::Sum;
+
 /// # Arguments
 /// * `left` - The left vector of numbers
 /// * `right` - The right vector of numbers
 /// # Returns
 /// * The total distance between the two vectors  
 /// # Panics
-/// * Panics if the two vectors are not the same length
-fn solve_distances(mut left: Vec<u64>, mut right: Vec<u64>) -> u64 {
-    left.sort();
-    right.sort();
+/// * Panics if the two vectors are not the same length, assumes they are also sorted.
+fn solve_distances(left: Vec<u64>, right: Vec<u64>) -> u64 {
     left.iter().zip(right.iter()).map(|(l, r)| l.abs_diff(*r)).sum()
+}
+
+fn similarity_score(left: Vec<u64>, right: Vec<u64>) -> u64 {
+    left.iter().map(|left| right.iter().filter(|&right| *right == *left).count() as u64).sum()
 }
 
 
@@ -20,8 +24,8 @@ mod tests {
     use std::io::{self, BufRead};
     use std::path::Path;
 
-    #[test]
-    fn part_one() -> io::Result<()> {
+
+    fn setup() -> Result<(Vec<u64>, Vec<u64>), io::Error> {
         let path = Path::new("input.txt"); // Specify the path to your file
         let file = File::open(&path)?;
         let reader = io::BufReader::new(file);
@@ -45,8 +49,26 @@ mod tests {
         assert!(!column1.is_empty());
         assert!(!column2.is_empty());
 
+        column1.sort();
+        column2.sort();
+
+        Ok((column1, column2))
+    }
+
+    #[test]
+    fn part_one() -> io::Result<()> {
+        let (column1, column2) = setup()?;
         let distance = solve_distances(column1, column2);
         println!("Distance: {}", distance);
+
+        Ok(())
+    }
+
+    #[test]
+    fn part_two() -> io::Result<()> {
+        let (column1, column2) = setup()?;
+        let sim_score = similarity_score(column1, column2);
+        println!("Similarity Score: {}", sim_score);
 
         Ok(())
     }
