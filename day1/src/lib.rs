@@ -15,7 +15,7 @@ fn solve_distances(left: Vec<u64>, right: Vec<u64>) -> u64 {
 /// # Returns
 /// * The similarity score between the two vectors
 /// # Assumptions
-/// * The vectors can be of different lengths and do not need to be sorted
+/// * The vectors are sorted and of the same length
 fn similarity_score(left: Vec<u64>, right: Vec<u64>) -> u64 {
     left.iter().map(|left|  left * right.iter().filter(|&right| *right == *left).count() as u64).sum()
 }
