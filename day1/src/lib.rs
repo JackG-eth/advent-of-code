@@ -1,5 +1,3 @@
-use std::iter::Sum;
-
 /// # Arguments
 /// * `left` - The left vector of numbers
 /// * `right` - The right vector of numbers
@@ -11,15 +9,22 @@ fn solve_distances(left: Vec<u64>, right: Vec<u64>) -> u64 {
     left.iter().zip(right.iter()).map(|(l, r)| l.abs_diff(*r)).sum()
 }
 
+/// # Arguments
+/// * `left` - The left vector of numbers
+/// * `right` - The right vector of numbers
+/// # Returns
+/// * The similarity score between the two vectors
+/// # Assumptions
+/// * The vectors can be of different lengths and do not need to be sorted
 fn similarity_score(left: Vec<u64>, right: Vec<u64>) -> u64 {
-    left.iter().map(|left| right.iter().filter(|&right| *right == *left).count() as u64).sum()
+    left.iter().map(|left|  left * right.iter().filter(|&right| *right == *left).count() as u64).sum()
 }
-
 
 #[cfg(test)]
 mod tests {
     use super::*;
     use crate::solve_distances;
+    use crate::similarity_score;
     use std::fs::File;
     use std::io::{self, BufRead};
     use std::path::Path;
