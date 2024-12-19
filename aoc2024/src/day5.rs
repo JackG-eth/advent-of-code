@@ -62,7 +62,7 @@ fn part2(input: &(HashMap<u64, HashSet<u64>>, Vec<Vec<u64>>)) -> u64 {
         });
         if !valid {
             let mut fixed_update = update.clone();
-            fixed_update.sort_by(|a, b| {
+            fixed_update.sort_by(|a: &u64, b| {
                 // If a is in b's must-come-after set, a should come after b
                 if let Some(b_rules) = input.0.get(b) {
                     if b_rules.contains(a) {
