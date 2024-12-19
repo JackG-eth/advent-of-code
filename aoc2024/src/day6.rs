@@ -52,51 +52,45 @@ fn part1(input: &[Vec<char>]) -> u64 {
     let mut direction = Direction::default();
 
     loop {
-        // Mark current position as visited
         if !visited.contains(&(x, y)) {
             visited.insert((x, y));
             count += 1;
         }
-        // Try to move in current direction
+
         match direction {
             Direction::NORTH => {
                 if x == 0 { break; }
                 if input[x-1][y] == '#' {
                     direction.rotate();
-                    (x, y);
-                }else {
-                    (x -= 1, y);
+                } else {
+                    x -= 1;
                 }
             },
             Direction::SOUTH => {
                 if x >= input.len() - 1 { break; }
                 if input[x+1][y] == '#' {
                     direction.rotate();
-                    (x, y);
-                }else {
-                    (x += 1, y);
+                } else {
+                    x += 1;
                 }
             },
             Direction::WEST => {
                 if y == 0 { break; }
                 if input[x][y-1] == '#' {
                     direction.rotate();
-                    (x, y);
-                }else {
-                    (x, y-=1);
+                } else {
+                    y -= 1;
                 }
             },
             Direction::EAST => {
                 if y >= input[x].len() - 1 { break; }
-                if y == 0 { break; }
                 if input[x][y+1] == '#' {
                     direction.rotate();
-                    (x, y);
-                }else {
-                    (x, y+=1);
+                } else {
+                    y += 1;
                 }
             },
-        };
+        }
     }
 
     count
